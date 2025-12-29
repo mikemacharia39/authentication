@@ -54,11 +54,6 @@ management:
       enabled: true
     health:
       enabled: true
-      group:
-        liveness:
-          include: livenessStateProbeIndicator,diskSpace,refreshScope
-        readiness:
-          include: readinessStateProbeIndicator,refreshScope
       probes:
         enabled: true
       show-details: always
