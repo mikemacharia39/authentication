@@ -1,10 +1,41 @@
 server:
   port: 5003
   shutdown: graceful
+  max-http-request-header-size: 100KB
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,application/javascript,application/json
+    min-response-size: 16384
 
 spring:
   application:
     name: authentication
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    hikari:
+      auto-commit: false
+      datasource-properties: # MySQL performance optimization
+        useConfigs: maxPerformance
+        zeroDateTimeBehavior: convertToNull
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useLocalSessionState: true
+        useUnbufferedInput: false
+        useReadAheadInput: false
+        rewriteBatchedStatements: true
+        cacheResultSetMetadata: true
+        cacheServerConfiguration: true
+        elideSetAutoCommits: true
+        maintainTimeStats: false
+  liquibase:
+    enabled: false
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    com.example.usermanagement: DEBUG
 
 management:
   security:
@@ -14,8 +45,21 @@ management:
     web:
       exposure:
         include: "*"
+      base-path: /
+      path-mapping:
+        health: health
+        info: inf
   endpoint:
     info:
       enabled: true
     health:
       enabled: true
+      group:
+        liveness:
+          include: livenessStateProbeIndicator,diskSpace,refreshScope
+        readiness:
+          include: readinessStateProbeIndicator,refreshScope
+      probes:
+        enabled: true
+      show-details: always
+      validate-group-memberships: false

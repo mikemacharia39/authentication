@@ -6,6 +6,9 @@ spring:
     password:
   jpa:
     open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
   liquibase:
     enabled: true
     changeLog: classpath:db/changelog/changelog.xml
