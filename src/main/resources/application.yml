@@ -1,0 +1,21 @@
+server:
+  port: 5003
+  shutdown: graceful
+
+spring:
+  application:
+    name: authentication
+
+management:
+  security:
+    enabled: false
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    info:
+      enabled: true
+    health:
+      enabled: true

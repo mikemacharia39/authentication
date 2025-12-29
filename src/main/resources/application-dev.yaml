@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3308/usermanagement
+    username: root
+    password:
+  jpa:
+    open-in-view: false
+  liquibase:
+    enabled: true
+    changeLog: classpath:db/changelog/changelog.xml
