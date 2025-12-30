@@ -1,5 +1,6 @@
 package com.mikehenry.authentication.domain.service;
 
+import com.mikehenry.authentication.api.dto.LoginAttemptsResponse;
 import com.mikehenry.authentication.api.dto.LoginRequest;
 import com.mikehenry.authentication.api.dto.LoginResponse;
 import com.mikehenry.authentication.domain.entity.LoginAttempt;
@@ -7,6 +8,8 @@ import com.mikehenry.authentication.domain.repository.LoginAttemptRepository;
 import com.mikehenry.authentication.domain.util.JwtHelper;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,5 +46,14 @@ public class LoginService {
                 .successful(success)
                 .build();
         loginAttemptRepository.save(loginAttempt);
+    }
+
+    public Page<LoginAttemptsResponse> getLoginAttemptsByEmail(final String email, final Pageable pageable) {
+        Page<LoginAttempt> loginAttempts = loginAttemptRepository.findByEmailOrderByAttemptedAtDesc(email, pageable);
+        return loginAttempts.map(attempt -> new LoginAttemptsResponse(
+                attempt.getEmail(),
+                attempt.isSuccessful(),
+                attempt.getDateCreated()
+        ));
     }
 }
