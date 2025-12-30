@@ -38,7 +38,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/forgot-password").permitAll()
                         .requestMatchers(HttpMethod.POST, "/reset-password").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/authentication-docs/**").permitAll()
                         .anyRequest().authenticated())
                 .authenticationManager(authenticationManager)
                 // Every other request is authenticated in the JwtAuthFilter
