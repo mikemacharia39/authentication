@@ -23,6 +23,9 @@
             <column name="password" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="has_verified_email" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
             <column name="date_created" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
@@ -32,7 +35,6 @@
         </createTable>
     </changeSet>
 
-<!--    create a login_attempt table-->
     <changeSet id="20251229175000-2" author="mikehenry">
         <preConditions onFail="MARK_RAN">
             <not>
@@ -58,5 +60,42 @@
                                  referencedTableName="user"
                                  referencedColumnNames="id"
                                  constraintName="fk_login_attempt_user"/>
+    </changeSet>
+
+    <changeSet id="20251229175000-3" author="mikehenry">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="user_code" schemaName="security"/>
+            </not>
+        </preConditions>
+        <createTable tableName="user_code" schemaName="security">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="date_created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name ="date_modified" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expires_at" type="DATETIME(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="used" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="user_code"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_user_code_user"/>
     </changeSet>
 </databaseChangeLog>
