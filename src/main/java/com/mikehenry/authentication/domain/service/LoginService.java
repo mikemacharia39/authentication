@@ -49,7 +49,7 @@ public class LoginService {
     }
 
     public Page<LoginAttemptsResponse> getLoginAttemptsByEmail(final String email, final Pageable pageable) {
-        Page<LoginAttempt> loginAttempts = loginAttemptRepository.findByEmailOrderByAttemptedAtDesc(email, pageable);
+        Page<LoginAttempt> loginAttempts = loginAttemptRepository.findByEmailOrderByIdDesc(email, pageable);
         return loginAttempts.map(attempt -> new LoginAttemptsResponse(
                 attempt.getEmail(),
                 attempt.isSuccessful(),
