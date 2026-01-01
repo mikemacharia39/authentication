@@ -17,10 +17,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -41,8 +41,8 @@ public class LoginController {
 
     @Operation(summary = "Get login attempts by email")
     @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = LoginAttemptsResponse.class)))
-    @GetMapping(path = "/login-attempts/{email}", produces = "application/json")
-    public ResponseEntity<Page<LoginAttemptsResponse>> getLoginAttempts(@PathVariable String email, Pageable pageable) {
+    @GetMapping(path = "/login-attempts", produces = "application/json")
+    public ResponseEntity<Page<LoginAttemptsResponse>> getLoginAttempts(@RequestParam String email, Pageable pageable) {
         Page<LoginAttemptsResponse> loginAttempts = loginService.getLoginAttemptsByEmail(email, pageable);
         return new ResponseEntity<>(loginAttempts, HttpStatus.OK);
     }
