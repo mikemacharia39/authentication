@@ -111,4 +111,22 @@
                                  constraintName="fk_user_code_user"
                                  onDelete="CASCADE"/>
     </changeSet>
+
+    <!--    add a new default user-->
+    <changeSet id="20260101120000-5" author="mikehenry">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                    SELECT COUNT(*) FROM security.user WHERE email = 'mikehenry@gmail.com'
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="user" schemaName="security">
+            <column name="user_key" valueComputed="UUID()"/>
+            <column name="full_name" value="Mikehenry"/>
+            <column name="email" value="mikehenry@gmail.com"/>
+            <column name="password" value="$2a$10$7QJH6j8eVh3Fz1Z5QH6lUuJ8eW8eVh3Fz1Z5QH6lUuJ8eW8eVh3Fz1Z5QH6lUuJ8eW8e"/> <!-- bcrypt hash for 'password123' -->
+            <column name="has_verified_email" valueBoolean="true"/>
+            <column name="date_created" valueDate="UTC_TIMESTAMP"/>
+            <column name="date_modified" valueDate="UTC_TIMESTAMP"/>
+        </insert>
+    </changeSet>
 </databaseChangeLog>
