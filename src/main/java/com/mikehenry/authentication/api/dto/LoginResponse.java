@@ -8,6 +8,8 @@ public record LoginResponse(
         @Schema(description = "JWT token")
         String accessToken,
         @Schema(description = "Token type", example = "Bearer")
-        String tokenType
+        String tokenType,
+        @Schema(description = "Expiration time in seconds", example = "3600")
+        Long expiresIn
 ) {
 }
