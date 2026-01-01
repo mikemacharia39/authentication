@@ -12,3 +12,8 @@ spring:
   liquibase:
     enabled: true
     changeLog: classpath:db/changelog/changelog.xml
+
+security:
+  jwt:
+    secret-key: bWlrZWhlbnJ5LXNlY3VyaXR5LWRldi1zZWNyZXQta2V5
+    token-validity-in-seconds: 3600
