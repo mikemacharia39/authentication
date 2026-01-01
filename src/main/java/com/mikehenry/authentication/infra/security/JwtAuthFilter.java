@@ -23,7 +23,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @RequiredArgsConstructor
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
-
+    private final JwtHelper jwtHelper;
     private final UserDetailsServiceImpl userDetailsService;
     private final ObjectMapper objectMapper;
 
@@ -37,7 +37,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             String username = null;
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 token = authHeader.substring(7);
-                username = JwtHelper.extractUsername(token);
+                username = jwtHelper.extractUsername(token);
             }
 
             // The expectation is any request having access token = null, is either a login, reset-password or forgot-password request.
@@ -49,7 +49,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                if (JwtHelper.validateToken(token, userDetails)) {
+                if (jwtHelper.validateToken(token, userDetails)) {
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, null);
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
