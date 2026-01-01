@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LoginAttemptRepository extends JpaRepository<LoginAttempt, Long>, JpaSpecificationExecutor<LoginAttempt> {
-    Page<LoginAttempt> findByEmailOrderByIdDesc(String email, Pageable pageable);
+    Page<LoginAttempt> findByEmail(String email, Pageable pageable);
 }
